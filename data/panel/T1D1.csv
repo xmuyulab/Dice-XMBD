@@ -1,0 +1,38 @@
+channel,Target,marker,ilastik_num,ilastik,ilastik_islet_vessel,ilastik_T,ilastik_islet,ilastik_immune,ilastik_exocrine,ilastik_other,full,membrane,cytoplasm,nuclear,membrane_cytoplasm,secreted
+0,Histone H3,H3,1,1,0,0,0,0,0,0,1,0,0,1,0,0
+1,SMA,SMA,2,1,0,1,0,0,0,1,1,0,1,0,1,0
+2,insulin,INS,-1,0,0,0,1,0,0,0,1,0,1,0,1,0
+3,CD38,CD38,-1,0,0,0,0,0,0,0,1,1,0,0,1,0
+4,CD44,CD44,3,1,0,1,0,0,1,0,1,1,0,0,1,0
+5,Prohormone Convertase 2,PCSK2,-1,0,0,0,1,0,0,0,1,0,0,0,1,0
+6,CD99,CD99,4,1,1,1,1,0,0,0,1,1,0,0,1,0
+7,CD68,CD68,-1,0,0,1,0,1,0,1,1,0,1,0,1,0
+8,Myeloperoxidase MPO,MPO,5,1,0,1,0,1,0,0,1,0,1,0,1,0
+9,Glucose Transporter GLUT1,SLC2A1,-1,0,0,0,0,0,0,0,1,0,0,0,1,0
+10,CD20,CD20,-1,0,0,1,0,1,0,0,1,1,0,0,1,0
+11,Pancreatic Amylase,AMY2A,-1,0,1,1,0,0,1,0,1,0,1,0,1,0
+12,CD3 epsilon,CD3e,-1,0,0,1,0,1,0,0,1,1,0,0,1,0
+13,Pancreatic Polypeptide,PPY,-1,0,0,0,1,0,0,0,1,0,0,0,0,0
+14,Proinsulin,PIN,-1,0,0,0,1,0,0,0,1,0,0,0,1,0
+15,Glucagon,GCG,-1,0,0,0,1,0,0,0,1,0,1,0,1,0
+16,Goat IgG,PDX1,-1,0,0,0,1,0,0,0,1,0,0,1,0,0
+17,Somatostatin,SST,-1,0,0,0,1,0,0,0,1,0,0,0,1,0
+18,Synaptophysin,SYP,6,1,1,1,1,0,0,0,1,1,0,0,1,0
+19,Cytokeratin 19,KRT19,7,1,1,1,0,0,1,0,1,0,1,0,1,0
+20,CD45,CD45,8,1,1,1,0,1,0,0,1,1,0,0,1,0
+21,FOXP3,FOXP3,-1,0,0,0,0,0,0,0,1,0,0,0,0,0
+22,CD45RA,CD45RA,-1,0,0,0,0,1,0,0,1,1,0,0,1,0
+23,CD8a,CD8a,-1,0,0,1,0,1,0,0,1,1,0,0,1,0
+24,Carbonic Anhydrase IX,CA9,-1,0,0,0,0,0,0,0,1,1,0,1,0,0
+25,islet amyloid polypeptide,IAPP,-1,0,0,0,1,0,0,0,1,0,0,0,1,0
+26,Ki-67,KI-67,-1,0,0,0,0,0,0,0,1,0,0,1,0,0
+27,NKX6-1,NKX6-1,-1,0,0,0,1,0,0,0,1,0,0,1,0,0
+28,Histone H3,pH3,-1,0,0,0,0,0,0,0,1,0,0,1,0,0
+29,CD4,CD4,-1,0,0,0,0,1,0,0,1,1,0,0,1,0
+30,CD31,CD31,9,1,1,0,0,0,0,1,1,1,1,0,1,0
+31,E-Cadherin / P-Cadherin,CDH,10,1,0,1,0,0,1,1,1,1,0,0,1,0
+32,Polyclonal Antibody against Human PTPRN,PTPRN,-1,0,0,0,0,0,0,0,1,1,0,0,1,0
+33,Rb,pRB,-1,0,0,0,0,0,0,0,1,0,0,0,0,0
+34,Cleaved Caspase3,cCASP3,-1,0,0,0,0,0,0,0,1,0,0,0,1,0
+35,Iridium,Ir191,-1,0,0,0,0,0,0,0,1,0,0,1,0,0
+36,Iridium,Ir193,11,1,1,0,0,0,0,0,1,0,0,1,0,0
