@@ -1,5 +1,4 @@
-# Dice-XMBD
-![image]()
+# Dice-XMBD ![image](https://raw.githubusercontent.com/xmuyulab/Dice-XMBD/main/figure/Dice-XMBD.jpeg)
 Dice-XMBD is marker agnostic and can perform cell segmentation for multiplexed images of different channel configurations without modification. This project contains code, a generic model, and example test datasets for single cell segmentaion of multiplexed imaging data. 
 
 ## 1. Install with docker image
@@ -59,7 +58,8 @@ sh src/test.sh
 ## 2. Quick start
 (0) resize image to 512*512 and combine multiple channels to 2 channel-input image (the given panel file need to have the same ordered with img channels: at least contains two columns("nuclear","membrane_cytoplasm"))
 ```
-example: python /workspace/process/1_preprocess_img.py --process pre
+# example: 
+python /workspace/process/1_preprocess_img.py --process pre
 python /workspace/process/1_preprocess_img.py --process pre --workdir /mnt/data/yourimgs --panel /mnt/data/yourimgs_panel_info
 ```
 
@@ -81,7 +81,8 @@ python /workspace/src/main_probability.py --action train --workdir /mnt/traindat
 
 (2) Get pixel probability map from a trained model:
 ```
-example: python /workspace/src/main_probability.py --action predict --weight='/workspace/data/model/02-15-20-14_threshold-99.7_withAugnoise-0.5_model_80.pth' --preddir '/workspace/data/predict_BRCA2/'
+# example: 
+python /workspace/src/main_probability.py --action predict --weight='/workspace/data/model/02-15-20-14_threshold-99.7_withAugnoise-0.5_model_80.pth' --preddir '/workspace/data/predict_BRCA2/'
 python /workspace/src/main_probability.py --action predict --weight='/workspace/data/model/02-15-20-14_threshold-99.7_withAugnoise-0.5_model_80.pth'
 
 # merge resized images to the original size of image:
