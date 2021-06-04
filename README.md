@@ -4,11 +4,15 @@ Dice-XMBD is marker agnostic and can perform cell segmentation for multiplexed i
 
 ## 1. Install with docker image
 Open terminal and go to the folder you want to store the project. Then type the following command:
-```git clone https://github.com/xmuyulab/Dice-XMBD.git```
+```
+git clone https://github.com/xmuyulab/Dice-XMBD.git
+```
 
 Next, the required environment and dependencies can be builded from a dorker image.
 Pull dorker image:
-```docker pull xiaoxu9907/dice-xmbd:latest```
+```
+docker pull xiaoxu9907/dice-xmbd:latest
+```
 
 
 Create a container with GPU:
@@ -28,7 +32,7 @@ docker run -it --name use-dice-xmbd \
 xiaoxu9907/dice-xmbd:latest /bin/bash
 ```
 
-Some docker command:
+Some docker commands:
 ```
 docker exec -it use-dice-xmbd bash # enter the container
 exit # or use ctrl+d to quit the container
@@ -37,7 +41,9 @@ docker stop use-dice-xmbd
 ```
 
 You may need to open permission for the folder if you want to modity the code in the docker container:
-```chmod +777 -R /path_to_Dice-XMBD/```
+```
+chmod +777 -R /path_to_Dice-XMBD/
+```
 
 Run an quick example with a trained model which can be downloaded [here](https://figshare.com/account/projects/115347/articles/14731563) (put the model in */path_to_Dice-XMBD/data/model* or use the following command):
 ```
