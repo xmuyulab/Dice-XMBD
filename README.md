@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/xmuyulab/Dice-XMBD/main/figure/Dice-XMBD.jpeg" width = "400" height = "400" align=left /> Deep learning-based cell segmentation for imaging mass cytometry
+# <img src="https://raw.githubusercontent.com/xmuyulab/Dice-XMBD/main/figure/Dice-XMBD.jpeg" width = "350" height = "350" align=left /> Deep learning-based cell segmentation for imaging mass cytometry
 Dice-XMBD is marker agnostic and can perform cell segmentation for multiplexed images of different channel configurations without modification. This project contains code, a generic model, and example test datasets for single cell segmentaion of multiplexed imaging data. 
 
 ## 1. Install with docker image
