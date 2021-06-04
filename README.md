@@ -1,5 +1,4 @@
-# Dice-XMBD ![image](https://raw.githubusercontent.com/xmuyulab/Dice-XMBD/main/figure/Dice-XMBD.jpeg =50x50)
-<img src="https://raw.githubusercontent.com/xmuyulab/Dice-XMBD/main/figure/Dice-XMBD.jpeg" width = "50" height = "50" align=center />
+# Dice-XMBD <img src="https://raw.githubusercontent.com/xmuyulab/Dice-XMBD/main/figure/Dice-XMBD.jpeg" width = "200" height = "200" align=center />
 Dice-XMBD is marker agnostic and can perform cell segmentation for multiplexed images of different channel configurations without modification. This project contains code, a generic model, and example test datasets for single cell segmentaion of multiplexed imaging data. 
 
 ## 1. Install with docker image
