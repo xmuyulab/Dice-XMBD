@@ -18,12 +18,6 @@ from self_augmentation import *
 from data_loader_probability import PredictCellDataset
 import stat
 
-# Use GPU
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-time=datetime.datetime.now().strftime("%m-%d-%H-%M")
-
 
 #1. Image flipping
 def my_transform1(image_mask):
@@ -147,6 +141,7 @@ def train():
     
     best_loss = 1000 #save model when loss lower than best_loss
     #num_epochs=80
+    start = datetime.datetime.now()
     for epoch in range(num_epochs):
         i=0
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
@@ -181,9 +176,10 @@ def train():
             y = model(x)
             val_loss = criterion(y, label)
             val_losses += val_loss.item()
-        print("epoch %d train_loss:%0.4f  val_loss:%0.4f" % (epoch, epoch_loss, val_losses))
+        end = datetime.datetime.now()
+        print("epoch %d train_loss:%0.4f  val_loss:%0.4f  time:%s" % (epoch, epoch_loss, val_losses, (end-start)))
         pandas_loss=pd.DataFrame([epoch_loss, val_losses]).T
-        pandas_loss.to_csv(loss_outpath, mode='a',encoding='utf-8',header=False,index=False)                   
+        pandas_loss.to_csv(loss_name, mode='a',encoding='utf-8',header=False,index=False)                   
         
         scheduler.step(val_losses) # In min mode, lr will be reduced when the quantity monitored(val_loss) has stopped decreasing;
         if val_losses < best_loss:
@@ -191,7 +187,7 @@ def train():
             best_loss = val_losses
             torch.save(model.state_dict(),model_name % num_epochs)# save model
             
-
+            
 def predict():
     model = unet.UNet(n_input_channel,n_input_channel)
     model.load_state_dict(torch.load(args.weight,map_location='cpu'))
@@ -234,16 +230,23 @@ if __name__ == '__main__':
     parser.add_argument('--threshold', type=float, default=99.7, help='ceiling pixel value to the percentile of total pixel intensity')
     parser.add_argument('--noise', type=bool, default=True, help='add random noise to do data augmentation')
     parser.add_argument('--aug_cof', type=float, default=0.5)
+    parser.add_argument('--cuda', type=str, default='0,1,2,3')
     parser.add_argument('--bs', type=int, default=4)
     parser.add_argument('--epoch',type=int, default=80)
     parser.add_argument('--lr', type=float, default=3e-4)
     args = parser.parse_args()
+    
+    # Use GPU
+    os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    time=datetime.datetime.now().strftime("%m-%d-%H-%M")
 
     ###0. project path
     #project_path="/mnt/public/qy/105backups/qy/qy/project/imc/METABRIC_IMC/train/"
     project_path=args.workdir
-    test_dir="test"#validation dataset
-    predict_dir=args.preddir#test dataset
+    test_dir="vali" #validation dataset
+    predict_dir=args.preddir #test dataset
     
 
     if args.action == 'train':
@@ -269,12 +272,18 @@ if __name__ == '__main__':
         #data augmentation with noise
         else:
             augmentation="_withAugnoise-"+str(augmentation_cof) if augmentation_cof else "_withAugnoise"
-
         #print("training mode is: ",threshold+augmentation)
         print("training parameters: percentile ({}), augmentation ({})".format(th, augmentation[1:]))
         ###train outpath
-        loss_outpath=os.path.join(project_path,"train","loss",time+threshold+augmentation+"_loss.csv")
-        model_name=os.path.join(project_path,'model',time+threshold+augmentation+'_model_%d.pth')
+        loss_path = os.path.join(project_path, 'loss')
+        loss_name=os.path.join(loss_path,time+threshold+augmentation+"_loss.csv")
+        
+        model_path = os.path.join(project_path, 'model')
+        model_name=os.path.join(model_path,time+threshold+augmentation+'_model_%d.pth')
+        if not os.path.exists(loss_path):
+            os.makedirs(loss_path)
+        if not os.path.exists(model_path):
+            os.makedirs(model_path)
         train()
     elif args.action == 'predict':
         ###1. image
