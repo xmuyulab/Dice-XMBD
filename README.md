@@ -51,7 +51,7 @@ chmod +777 -R /path_to_Dice-XMBD/
 
 DATAPATH="/home/xiaoxu/IMC/Dice-XMBD/data/" # change to /your_data_dir/
 mkdir -p "$DATAPATH"/model
-wget https://ndownloader.sfigshare.com/files/28301040 -O "$DATAPATH"model/02-15-20-14_threshold-99.7_withAugnoise-0.5_model_80.pth
+wget https://ndownloader.figshare.com/files/28301040 -O "$DATAPATH"model/02-15-20-14_threshold-99.7_withAugnoise-0.5_model_80.pth
 
 docker exec -it use-dice-xmbd bash
 

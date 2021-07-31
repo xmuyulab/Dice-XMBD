@@ -8,7 +8,7 @@ mkdir -p "$DATAPATH"/BRCA1
 mkdir -p "$DATAPATH"/model
 
 # download model
-wget https://ndownloader.sfigshare.com/files/28301040 -O "$DATAPATH"model/02-15-20-14_threshold-99.7_withAugnoise-0.5_model_80.pth
+wget https://ndownloader.figshare.com/files/28301040 -O "$DATAPATH"model/02-15-20-14_threshold-99.7_withAugnoise-0.5_model_80.pth
 
 #download training and test dataset
 wget https://ndownloader.figshare.com/files/28298646 -O "$DATAPATH"BRCA1/train.zip
