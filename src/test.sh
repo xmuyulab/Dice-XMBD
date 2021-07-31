@@ -1,8 +1,12 @@
+#!/bin/bash
+
+DATAPATH="/home/xiaoxu/IMC/Dice-XMBD/data/" # change to /your_data_dir/
+
 #### preprocess image data
 # python /workspace/process/1_preprocess_img.py --process pre 
 
 #### train a model
-python /workspace/src/main_probability.py --action train --epoch 30 --workdir /mnt/davinci/temp/xx_data/IMC/Dice-XMDB/data/BRCA1 --bs 2
+python /workspace/src/main_probability.py --action train --epoch 30 --workdir "$DATAPATH"BRCA1 --bs 2
 
 # #### predict pixel probability maps by a trained model
 # python /workspace/src/main_probability.py --action predict --weight='/workspace/data/model/02-15-20-14_threshold-99.7_withAugnoise-0.5_model_80.pth' --preddir '/workspace/data/predict_BRCA2/'

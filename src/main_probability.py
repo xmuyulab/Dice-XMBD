@@ -133,7 +133,8 @@ def train():
                               com_transform=trans_val_com,
                               noise_transform=noise_transform
                               )
-       
+    
+    print('training: {}, validation: {}'.format(len(train_dataset.img_list), len(val_dataset.img_list)))
  
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size) 
     val_dataloader = DataLoader(val_dataset, batch_size=1) 
@@ -151,7 +152,7 @@ def train():
         model.train()
         epoch_loss = 0
         optimizer.zero_grad()
-        for x, y in train_dataloader:# batch_size=4
+        for x, y, name in train_dataloader:# batch_size=4
             inputs = x.to(device)
             labels = y.to(device)
             inputs = inputs.to(torch.float32)
@@ -162,13 +163,13 @@ def train():
             optimizer.step()#update parameter
             optimizer.zero_grad()#set gradient to zero
             epoch_loss += loss.item()
-            
+    
             i=i+1
             
         #validation
         model.eval()
         val_losses = 0
-        for x, label in val_dataloader:
+        for x, label, name in val_dataloader:
             x = x.to(device)
             label = label.to(device)
             x = x.to(torch.float32)
@@ -176,6 +177,7 @@ def train():
             y = model(x)
             val_loss = criterion(y, label)
             val_losses += val_loss.item()
+            
         end = datetime.datetime.now()
         print("epoch %d train_loss:%0.4f  val_loss:%0.4f  time:%s" % (epoch, epoch_loss, val_losses, (end-start)))
         pandas_loss=pd.DataFrame([epoch_loss, val_losses]).T
@@ -227,9 +229,12 @@ if __name__ == '__main__':
     parser.add_argument('--weight', type=str, help='the path of the model')
     parser.add_argument('--workdir', type=str, default="/workspace/data/", help='the path of the data folder')
     parser.add_argument('--preddir', type=str, default="/workspace/data/predict_BRCA2/", help='the new img dataset folder')
+    parser.add_argument('--mname', type=str, default="BRCA1", help='model name')
+    parser.add_argument('--testname', type=str, default="combined2_image", help='test folder name') 
     parser.add_argument('--threshold', type=float, default=99.7, help='ceiling pixel value to the percentile of total pixel intensity')
     parser.add_argument('--noise', type=bool, default=True, help='add random noise to do data augmentation')
     parser.add_argument('--aug_cof', type=float, default=0.5)
+    parser.add_argument('--resize', type=str, default='False')
     parser.add_argument('--cuda', type=str, default='0,1,2,3')
     parser.add_argument('--bs', type=int, default=4)
     parser.add_argument('--epoch',type=int, default=80)
@@ -243,11 +248,14 @@ if __name__ == '__main__':
     time=datetime.datetime.now().strftime("%m-%d-%H-%M")
 
     ###0. project path
-    #project_path="/mnt/public/qy/105backups/qy/qy/project/imc/METABRIC_IMC/train/"
     project_path=args.workdir
-    test_dir="vali" #validation dataset
+    test_dir="test" #validation dataset
     predict_dir=args.preddir #test dataset
     
+    if args.resize == 'True':
+        resize_crop=True # only for the size of x is double of y. 
+    else:
+        resize_crop=False
 
     if args.action == 'train':
         ###1. image
@@ -256,7 +264,6 @@ if __name__ == '__main__':
         ###2. label
         train_label_dir = os.path.join(project_path,"train/probability")
         test_label_dir = os.path.join(project_path,test_dir,"probability")
-        resize_crop=True
         
         th=args.threshold#default 99.7
         threshold="_threshold-"+str(th) if th else ""           
@@ -287,8 +294,7 @@ if __name__ == '__main__':
         train()
     elif args.action == 'predict':
         ###1. image
-        predict_img_dir=os.path.join(predict_dir,"crop512_combined2_image")
-        resize_crop=True
+        predict_img_dir=os.path.join(predict_dir,args.testname)
         process_info=args.weight.split("/")[-1][12:][:-13].split('_')
         print('trained model parameters: {}'.format(process_info))
 
@@ -303,8 +309,8 @@ if __name__ == '__main__':
             out_subdir=threshold
         if out_subdir[0] is "_":
             out_subdir=out_subdir[1:]  
-        predict_outpath =os.path.join(predict_dir,"predictionProbability",out_subdir)
+        predict_outpath =os.path.join(predict_dir,"predictionProbability",args.mname+'_'+out_subdir)
         if not os.path.exists(predict_outpath):
-            os.mkdir(predict_outpath)
+            os.makedirs(predict_outpath)
         print("predicted probability map folder:",predict_outpath)
         predict()

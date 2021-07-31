@@ -190,7 +190,7 @@ def normalize_maxmin(a):
 #data.Dataset:
 class CellDataset(data.Dataset):
     #创建LiverDataset类的实例时，就是在调用init初始化
-    def __init__(self,image_dir,label_dir, clip=False,threshold=False,normalize=False,equalizeHistAug=False, resize_crop=True,transform = None,label_transform = None,com_transform=None,noise_transform=None):
+    def __init__(self,image_dir,label_dir, clip=True,threshold=False,normalize=True,equalizeHistAug=False, resize_crop=True,transform = None,label_transform = None,com_transform=None,noise_transform=None):
         #n = len(os.listdir(train_dir)) #os.listdir(path)
         self.image_dir = image_dir
         self.label_dir = label_dir
@@ -238,6 +238,11 @@ class CellDataset(data.Dataset):
         img_y0=img_y0/(2**16-1)
         img_y0=np.around(img_y0, 1)
         
+        if img_y0.shape[0] != img_x.shape[1]:
+            self.resize_crop = True
+        else:
+            self.resize_crop = False
+        
         if self.resize_crop:
             img_y=resize(img_y0, (img_y0.shape[0]/2,img_y0.shape[1]/2, img_y0.shape[2]), mode='constant', preserve_range=True)
             img_y=img_y.transpose(2,0,1)
@@ -271,7 +276,7 @@ class CellDataset(data.Dataset):
             img_x=self.noise_transform(img_x)
             img_x=np.uint8(img_x)
         
-        return img_x,img_y
+        return img_x,img_y,image_name
     
     
     def __len__(self):
