@@ -11,6 +11,7 @@ def combine_channels(images_path, panel_path, channel_type, out_path, imgsuffix,
         if fn.endswith(imgsuffix):
             images.append(fn)
     print('process images: {}'.format(images))        
+    print('process images number: {}'.format(len(images)))
     panel=pd.read_csv(panel_path)
 
     for i in range(len(images)):
@@ -21,10 +22,10 @@ def combine_channels(images_path, panel_path, channel_type, out_path, imgsuffix,
                 channels=list(panel[panel[channel_type[j]]==1].index)
                 result[j,:,:] = np.sum(img[channels,:,:],axis=0)
             #print(result.shape)
-            tiff.imwrite(os.path.join(out_path,images[i].replace('full','combined')),result,imagej=imagej)
+            tiff.imwrite(os.path.join(out_path,images[i].replace(imgsuffix.split('.tiff')[0],'_combined')),result,imagej=imagej)
 
 
-def combine2Img(images_path, combined_path, panel_info, imgsuffix):
+def combine2Img(images_path, combined_path, panel_info, imgsuffix, channel_nuc='nuclear', channel_mem='membrane_cytoplasm'):
 #     images_path="/mnt/davinci/temp/kong_IMC/analysis/fullstacks/"
 #     combined_path="/mnt/davinci/temp/kong_IMC/analysis/unet/combine2"
 
@@ -33,7 +34,7 @@ def combine2Img(images_path, combined_path, panel_info, imgsuffix):
 
     combine_channels(images_path=images_path,
                     panel_path = panel_info,
-                    channel_type=["nuclear","membrane_cytoplasm"],
+                    channel_type=[channel_nuc,channel_mem],
                     out_path=combined_path,
                     imgsuffix = imgsuffix,
                     imagej=False)
@@ -57,8 +58,9 @@ def cropImg(crop512_combined_path, combined_path):
                     if (y2 < 512) or (x2 < 512):
                         padimg= np.pad(img512, ((0,0), (0, 512-y2), (0, 512-x2)), 'constant', constant_values=(0, 0))
                         img512 = padimg
-                tiff.imwrite(os.path.join(crop512_combined_path,file.replace("combinedstack.tiff","combined_cropx{}_cropy{}.tiff".format(str(i),str(j)))),img512,imagej=False)
+                    tiff.imwrite(os.path.join(crop512_combined_path,file.replace("combined.tiff","combined_cropx{}_cropy{}.tiff".format(str(i),str(j)))),img512,imagej=False)
                             
+                    
 def mergeImg(prop_path, combined_path, out_path):
     
     files = os.listdir(prop_path)
@@ -70,11 +72,12 @@ def mergeImg(prop_path, combined_path, out_path):
     sampledic = {}
 
     for each in files:
-        sample = each.split('_combined_cropx0')[0]
+        sample = each.split('_combined_cropx')[0]
         if sample not in sampledic.keys():
             sampledic[sample] = [each]
         else:
             sampledic[sample].append(each)
+            
             
     for each in sampledic.keys():
         rois = sampledic[each]
@@ -83,7 +86,7 @@ def mergeImg(prop_path, combined_path, out_path):
             x = roi.split('_pred_Probabilities')[0].split('_crop')[1][1:]
             y = roi.split('_pred_Probabilities')[0].split('_crop')[2][1:]
             imgs[str(x)+'_'+str(y)] = tiff.imread(os.path.join(prop_path, roi))
-        original = tiff.imread(os.path.join(combined_path, each+'_combinedstack.tiff'))
+        original = tiff.imread(os.path.join(combined_path, each+'_combined.tiff'))
 
         z, y, x = original.shape
         ori_prop = np.zeros((512*math.ceil(x/512),512*math.ceil(x/512),3))
@@ -101,7 +104,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--process', type=str, help='pre or post')
     parser.add_argument('--workdir', type=str, default="/workspace/data/predict_BRCA2/", help='the path of the data folder')
+    parser.add_argument('--propn', type=str, default="BRCA1_threshold-99.7_withAugnoise-0.5", help='the name of predicted probability in the data folder')
     parser.add_argument('--panel', type=str, default='/workspace/data/panel/BRCA2.csv', help='the path of the panel file => same ordered with img channel: at least need contain two columns("nuclear","membrane_cytoplasm")')
+    parser.add_argument('--channel_n', type=str, default='nuclear', help='the column name for nuclear channel in panel file')
+    parser.add_argument('--channel_m', type=str, default='membrane_cytoplasm', help='the column name for membrane channel in panel file')
+    parser.add_argument('--imgdir', type=str, default="/workspace/data/predict_BRCA2/fullstacks/", help='the path of the img data folder')
     parser.add_argument('--imgsuf', type=str, default='_fullstack.tiff', help='images suffix')
     args = parser.parse_args()
     
@@ -109,12 +116,16 @@ if __name__ == '__main__':
     process = args.process
     panelpath = args.panel
     imgsuffix = args.imgsuf
+    imgdir = args.imgdir
+    prop_path_name = args.propn
+    channel_mem = args.channel_m
+    channel_nuc = args.channel_n
     
     if process == 'pre':
-        combine2Img(os.path.join(workdir, 'fullstacks'), os.path.join(workdir, 'combined2_image'), panelpath, imgsuffix)
+        combine2Img(imgdir, os.path.join(workdir, 'combined2_image'), panelpath, imgsuffix, channel_nuc=channel_nuc, channel_mem=channel_mem)
         cropImg(os.path.join(workdir, 'crop512_combined2_image'), os.path.join(workdir, 'combined2_image'))
     elif process == 'post':
-        prop_path = os.path.join(workdir, 'predictionProbability','threshold-99.7_withAugnoise-0.5')
+        prop_path = os.path.join(workdir, 'predictionProbability', prop_path_name)
         combined_path = os.path.join(workdir, 'combined2_image')
         out_path = os.path.join(prop_path, 'ori_prop')
         mergeImg(prop_path, combined_path, out_path)

@@ -58,6 +58,15 @@ def measure_markers(raw_img,raw_mask,measure_label=False):
                   'major_axis':cell_major_axis}
     return labels_prop,mean_exp_matrix
 
+def matchsize(img, mask):
+    x1, y1, z1 = img.shape
+    x2, y2 = mask.shape
+
+    mask = mask[:x1,:y1]
+    
+    print('img: {},{}, mask: {},{}'.format(x1,y1, x2, y2))
+    return(mask)
+
 
 def fun2(i):
     if os.path.exists(os.path.join(output_path,"{0}.csv".format(i))):
@@ -65,6 +74,10 @@ def fun2(i):
     else:
         raw_img=tiff.imread(os.path.join(img_path,i+img_suffix)).transpose(1,2,0).astype(np.float64)
         raw_mask = tiff.imread(os.path.join(mask_path,i+mask_suffix))
+        
+        if matchsize:
+            raw_mask = matchsize(raw_img, raw_mask)
+        
         labels_prop,mean_exp_matrix= measure_markers(raw_img=raw_img,raw_mask=raw_mask,measure_label=True)
         
         marker_exp=pd.DataFrame(mean_exp_matrix,columns=fullstacks_channel_names['marker'])
@@ -87,27 +100,35 @@ def fun2(i):
     
     
 ####  
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--workdir', type=str, default="/workspace/data/predict_BRCA2/", help='the path of the data folder')
+    parser.add_argument('--name', type=str, default="CP", help='the name of the data folder')
     parser.add_argument('--panel', type=str, default='/workspace/data/panel/BRCA2.csv', help='the path of the panel file => same ordered with img channel: at least need contain two columns("nuclear","membrane_cytoplasm")')
     parser.add_argument('--imgsuf', type=str, default='_fullstack.tiff', help='images suffix')
+    parser.add_argument('--masksuf', type=str, default='_pred_Probabilities_cell_mask.tiff', help='mask images suffix')
+    parser.add_argument('--imgdir', type=str, default="/mnt/davinci/temp/kong_IMC/analysis/fullstacks", help='the name of the data folder')
     parser.add_argument('--maskpath', type=str, default='/workspace/data/predict_BRCA2/mask')
+    parser.add_argument('--matchsize', type=str, default='False')
     args = parser.parse_args()
     
     workdir = args.workdir
     panelpath = args.panel
     mask_path = args.maskpath
-    output_path = os.path.join(workdir, 'protein')
-    
+    pname = args.name
+    img_path = args.imgdir
     fullstacks_channel_names = pd.read_csv(panelpath)
-    
-    img_path = os.path.join(workdir, 'fullstacks')
     img_suffix = args.imgsuf
+    mask_suffix = args.masksuf
+    
+    if args.matchsize == 'False':
+        matchsize = False
+    else:
+        matchsize = True
+    
+    output_path = os.path.join(workdir, 'protein', pname)
     
     masks=np.sort(os.listdir(mask_path))
-    mask_suffix = '_pred_Probabilities_cell_mask.tiff'
     masks = [i for i in masks if 'cell_mask' in i]
     
     id1 = [i.split(img_suffix)[0] for i in os.listdir(img_path) if 'fullstack' in i]
@@ -123,4 +144,3 @@ if __name__ == '__main__':
     with Pool(40) as p:
         result2 = p.map(fun2,[i for i in image_name])
     print(time.time() - t0, "seconds process time")
-    
