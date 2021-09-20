@@ -76,7 +76,7 @@ python /workspace/process/1_preprocess_img.py --process pre
 python /workspace/process/1_preprocess_img.py --process pre --workdir /mnt/data/yourimgs --panel /mnt/data/yourimgs_panel_info
 ```
 
-(1) Training a model use your own training dataset which should contain *train* and *test* datasets, training datasets example can be download here: [train](https://figshare.com/account/projects/115347/articles/14730573) and [test](https://figshare.com/account/projects/115347/articles/14730480) (put datasets in */your_data_dir/data/* folder or use the following command).
+(1) Training a model use your own training dataset which should contain *train* and *test* datasets, training datasets example can be download here: [train](https://ndownloader.figshare.com/files/28298646) and [test](https://ndownloader.figshare.com/files/28297719) (put datasets in */your_data_dir/data/* folder or use the following command).
 ```
 # download training datasets and put in */path_to_Dice-XMBD/data/* folder
 DATAPATH="/home/xiaoxu/IMC/Dice-XMBD/data/" # change to /your_data_dir/
@@ -118,5 +118,5 @@ python /workspace/process/3_imc_extract_pro.py
 
 
 ## 4. Dice-XMBD training dataset and other test datasets
-Trainging datasets can be downloaded here: [BRCA1](https://figshare.com/account/home#/projects/115347), its original images can be found [here](https://idr.openmicroscopy.org/search/?query=Name:idr0076-ali-metabric/experimentA)
+Trainging datasets can be downloaded here: [BRCA1](https://ndownloader.figshare.com/files/28298646), the corresponding original images can be found [here](https://idr.openmicroscopy.org/about/download.html) with accession code idr0076. 
 Other test datasets used in our paper can be downloaded from: [BRCA2](https://zenodo.org/record/3518284#.YLnmlS8RquU), [T1D1](https://data.mendeley.com/datasets/cydmwsfztj/1), [T1D2-part1](https://data.mendeley.com/datasets/9b262xmtm9/1), [T1D2-part2](https://data.mendeley.com/datasets/xbxnfg2zfs/1)
