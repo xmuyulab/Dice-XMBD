@@ -60,7 +60,10 @@ python /workspace/src/main_probability.py --action predict --weight="/mnt/data/m
 ```
 
 (2) Get single cell mask from CellProfiler:
-Download [CellProfiler](https://cellprofiler.org/previous-releases) and use */path_to_Dice-XMBD/process/2_generate_cellmask.cpproj* pipeline to post-process pixel probability maps from step(1)
+Download [CellProfiler 3.1.9](https://cellprofiler.org/previous-releases) and use */path_to_Dice-XMBD/process/2_generate_cellmask.cpproj* pipeline (from [Bernd Boddenmiller lab](https://github.com/BodenmillerGroup/ImcSegmentationPipeline/tree/main/cp3_pipelines)) to post-process pixel probability maps from step(1). Some modules in this pipeline are required in the folder */path_to_Dice-XMBD/process/ImcPluginsCP/plugins*, which can be downloaded in [Bernd Boddenmiller lab](https://github.com/BodenmillerGroup/ImcPluginsCP) as well. 
+For CellProfiler GUI: modify the CellProfiler Preferences to the plugin folder (path_to/ImcPluginsCP/plugins) and then restart cellprofiler.
+For command line: --plugins-directory=path_to/ImcPluginsCP/plugins
+
 
 (3) Extract mean protein intensity of single cells:
 ```
