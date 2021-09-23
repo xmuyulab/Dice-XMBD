@@ -1,6 +1,6 @@
 # ![image](https://raw.githubusercontent.com/xmuyulab/Dice-XMBD/main/figure/Dice-XMBD.jpg)
 [comment]:<img src="https://raw.githubusercontent.com/xmuyulab/Dice-XMBD/main/figure/Dice-XMBD.jpg" align=center />
-Dice-XMBD is marker agnostic and can perform cell segmentation for multiplexed images of different channel configurations without modification. This project contains code, a generic model, and example test datasets for single cell segmentaion of multiplexed imaging data. 
+Dice-XMBD<sup>1</sup> is marker agnostic and can perform cell segmentation for multiplexed images of different channel configurations without modification. This project contains code, a generic model, and example test datasets for single cell segmentaion of multiplexed imaging data. 
 
 ## 1. Install with docker image
 Open terminal and go to the folder you want to store the project. Then type the following command:
@@ -60,7 +60,7 @@ python /workspace/src/main_probability.py --action predict --weight="/mnt/data/m
 ```
 
 (2) Get single cell mask from CellProfiler:
-Download [CellProfiler 3.1.9](https://cellprofiler.org/previous-releases) and use */path_to_Dice-XMBD/process/2_generate_cellmask.cpproj* pipeline (from [Bernd Boddenmiller lab](https://github.com/BodenmillerGroup/ImcSegmentationPipeline/tree/main/cp3_pipelines)) to post-process pixel probability maps from step(1). Some modules in this pipeline are required in the folder */path_to_Dice-XMBD/process/ImcPluginsCP/plugins*, which can be downloaded in [Bernd Boddenmiller lab](https://github.com/BodenmillerGroup/ImcPluginsCP) as well. 
+Download [CellProfiler 3.1.9](https://cellprofiler.org/previous-releases) and use */path_to_Dice-XMBD/process/2_generate_cellmask.cpproj* pipeline (from [Bernd Bodenmiller lab<sup>2</sup>](https://github.com/BodenmillerGroup/ImcSegmentationPipeline/tree/main/cp3_pipelines)) to post-process pixel probability maps from step(1). Some modules in this pipeline are required in the folder */path_to_Dice-XMBD/process/ImcPluginsCP/plugins*, which can be downloaded in [Bernd Bodenmiller lab](https://github.com/BodenmillerGroup/ImcPluginsCP) as well. 
 
 For CellProfiler GUI: modify the CellProfiler Preferences to the plugin folder (path_to/ImcPluginsCP/plugins) and then restart cellprofiler.
 
@@ -125,3 +125,10 @@ python /workspace/process/3_imc_extract_pro.py
 ## 4. Dice-XMBD training dataset and other test datasets
 Trainging datasets can be downloaded here: [BRCA1](https://ndownloader.figshare.com/files/28298646), the corresponding original images can be found [here](https://idr.openmicroscopy.org/about/download.html) with accession code idr0076. 
 Other test datasets used in our paper can be downloaded from: [BRCA2](https://zenodo.org/record/3518284#.YLnmlS8RquU), [T1D1](https://data.mendeley.com/datasets/cydmwsfztj/1), [T1D2-part1](https://data.mendeley.com/datasets/9b262xmtm9/1), [T1D2-part2](https://data.mendeley.com/datasets/xbxnfg2zfs/1)
+
+
+## 5. References
+[1] Xiao X, Qiao Y, Jiao Y, Fu N, Yang W, Wang L, Yu R and Han J (2021) Dice-XMBD: Deep Learning-Based Cell Segmentation for Imaging Mass Cytometry. Front. Genet. 12:721229. [https://doi.org/10.3389/fgene.2021.721229](https://doi.org/10.3389/fgene.2021.721229)
+[2] BodenmillerGroup. 2020. ImcPluginsCP. [https://github.com/BodenmillerGroup/ImcPluginsCP](https://github.com/BodenmillerGroup/ImcPluginsCP)
+
+
