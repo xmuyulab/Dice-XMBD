@@ -60,7 +60,7 @@ python /workspace/src/main_probability.py --action predict --weight="/mnt/data/m
 ```
 
 (2) Get single cell mask from CellProfiler:
-Download [CellProfiler 3.1.9](https://cellprofiler.org/previous-releases) and use */path_to_Dice-XMBD/process/2_generate_cellmask.cpproj* pipeline (from [Bernd Bodenmiller lab<sup>2</sup>](https://github.com/BodenmillerGroup/ImcSegmentationPipeline/tree/main/cp3_pipelines)) to post-process pixel probability maps from step(1). Some modules in this pipeline are required in the folder */path_to_Dice-XMBD/process/ImcPluginsCP/plugins*, which can be downloaded in [Bernd Bodenmiller lab](https://github.com/BodenmillerGroup/ImcPluginsCP) as well. 
+Download [CellProfiler 3.1.9](https://cellprofiler.org/previous-releases) and use */path_to_Dice-XMBD/process/2_generate_cellmask.cpproj* pipeline (from [Bernd Bodenmiller lab<sup>2</sup>](https://github.com/BodenmillerGroup/ImcSegmentationPipeline/tree/main/cp3_pipelines)) to post-process pixel probability maps from step(1). Some modules in this pipeline are required in the folder */path_to_Dice-XMBD/process/ImcPluginsCP/plugins*, which can be downloaded in [Bernd Bodenmiller lab<sup>2</sup>](https://github.com/BodenmillerGroup/ImcPluginsCP) as well. 
 
 For CellProfiler GUI: modify the CellProfiler Preferences to the plugin folder (path_to/ImcPluginsCP/plugins) and then restart cellprofiler.
 
@@ -129,6 +129,6 @@ Other test datasets used in our paper can be downloaded from: [BRCA2](https://ze
 
 ## 5. References
 [1] Xiao X, Qiao Y, Jiao Y, Fu N, Yang W, Wang L, Yu R and Han J (2021) Dice-XMBD: Deep Learning-Based Cell Segmentation for Imaging Mass Cytometry. Front. Genet. 12:721229. [https://doi.org/10.3389/fgene.2021.721229](https://doi.org/10.3389/fgene.2021.721229)
-[2] BodenmillerGroup. 2020. ImcPluginsCP. [https://github.com/BodenmillerGroup/ImcPluginsCP](https://github.com/BodenmillerGroup/ImcPluginsCP)
+[2] BodenmillerGroup. 2020. ImcPluginsCP. [https://github.com/BodenmillerGroup/ImcPluginsCP](https://github.com/BodenmillerGroup/ImcPluginsCP); ImcSegmentationPipeline. [https://github.com/BodenmillerGroup/ImcSegmentationPipeline/tree/main/cp3_pipelines](https://github.com/BodenmillerGroup/ImcSegmentationPipeline/tree/main/cp3_pipelines)
 
 
